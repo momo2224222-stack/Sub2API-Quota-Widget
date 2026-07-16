@@ -1,0 +1,20 @@
+node_modules/
+
+# Local account data and desktop state. These files may contain tokens,
+# passwords, account URLs, widget position, and machine-specific settings.
+data/
+migration/
+desktop-settings.json
+
+# Local runtime files
+server.err.log
+server.out.log
+*.log
+
+# Environment and local packaging
+.env
+.env.*
+!.env.example
+*.zip
+*_迁移包_*/
+开源/

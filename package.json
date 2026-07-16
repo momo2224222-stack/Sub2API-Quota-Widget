@@ -1,0 +1,16 @@
+{
+  "name": "account-quota-local-dashboard",
+  "version": "1.0.0",
+  "description": "Local desktop widget and dashboard for Sub2API account quota monitoring.",
+  "license": "MIT",
+  "main": "desktop/main.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.mjs",
+    "desktop": "electron ."
+  },
+  "dependencies": {
+    "electron": "^37.0.0",
+    "undici": "^6.27.0"
+  }
+}

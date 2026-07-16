@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>账号额度面板</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="widgetContent" class="widget-content">
+      <div id="widgetToolbar" class="widget-toolbar hidden">
+        <div class="widget-drag">账号额度挂件</div>
+        <div class="widget-actions">
+          <button id="widgetOpenPanelBtn" type="button" class="ghost">打开面板</button>
+          <button id="widgetLockBtn" type="button" class="ghost">锁定位置</button>
+          <button id="widgetMinimizeBtn" type="button" class="ghost">最小化</button>
+          <button id="widgetCloseBtn" type="button" class="ghost">关闭</button>
+        </div>
+      </div>
+      <div class="app-shell">
+        <header class="topbar">
+          <div>
+            <h1>账号额度面板</h1>
+          </div>
+          <div class="actions">
+            <button id="refreshAllBtn" class="primary">全部刷新</button>
+            <button id="openAddBtn">新增账号</button>
+          </div>
+        </header>
+        <main class="layout">
+          <section class="panel list-panel">
+            <div id="accountList" class="account-list"></div>
+            <div id="emptyState" class="empty hidden">
+              <strong>还没有账号</strong>
+              <span>点击右上角新增账号。</span>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+    <div id="widgetWidthHandle" class="widget-width-handle hidden" title="拖动调整宽度，内部会挤压重排"></div>
+    <div id="widgetResizeHandle" class="widget-resize-handle hidden" title="拖动整体缩放，不挤压内部"></div>
+
+    <div id="accountModal" class="modal-overlay hidden">
+      <section class="panel form-panel modal-panel" id="formPanel" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+        <div class="panel-head">
+          <h2 id="formTitle">新增 Sub2API 账号</h2>
+          <div class="panel-actions">
+            <button id="cancelEditBtn" class="ghost hidden" type="button">取消编辑</button>
+            <button id="closeFormBtn" class="ghost" type="button">关闭</button>
+          </div>
+        </div>
+        <form id="accountForm" autocomplete="off">
+            <input type="hidden" id="accountId" />
+            <label>
+              <span>显示名称</span>
+              <input id="nameInput" placeholder="例如：主账号" />
+            </label>
+            <label>
+              <span>Sub2API 地址</span>
+              <input id="baseUrlInput" list="baseUrlHistory" placeholder="https://example.com" required />
+              <datalist id="baseUrlHistory"></datalist>
+            </label>
+            <div class="login-box">
+              <div class="section-title">
+                <strong>账号密码获取 Token</strong>
+                <span>保存到本机，Token 失效后自动重登</span>
+              </div>
+              <label>
+                <span>登录邮箱</span>
+                <input id="loginEmailInput" placeholder="Sub2API 登录邮箱" autocomplete="username" />
+              </label>
+              <label>
+                <span>登录密码</span>
+                <input id="loginPasswordInput" type="password" placeholder="Sub2API 登录密码" autocomplete="current-password" />
+              </label>
+              <label>
+                <span>Turnstile Token</span>
+                <input id="turnstileTokenInput" placeholder="站点开启人机验证时再填" autocomplete="off" />
+              </label>
+              <div class="form-actions">
+                <button type="button" id="loginBtn">登录获取 Token</button>
+              </div>
+              <div id="twoFactorBlock" class="two-factor hidden">
+                <div class="section-title compact">
+                  <strong>2FA 验证</strong>
+                  <span id="twoFactorEmail"></span>
+                </div>
+                <label>
+                  <span>验证码</span>
+                  <input id="twoFactorCodeInput" inputmode="numeric" maxlength="6" placeholder="6 位动态码" autocomplete="one-time-code" />
+                </label>
+                <div class="form-actions">
+                  <button type="button" id="twoFactorBtn">提交 2FA</button>
+                </div>
+              </div>
+            </div>
+            <label>
+              <span>Access Token</span>
+              <textarea id="accessTokenInput" rows="3" placeholder="JWT / auth_token。编辑账号时留空表示不修改。"></textarea>
+            </label>
+            <label>
+              <span>Refresh Token</span>
+              <textarea id="refreshTokenInput" rows="3" placeholder="建议填写，Access Token 过期后可自动刷新。"></textarea>
+            </label>
+            <label>
+              <span>过期时间</span>
+              <input id="tokenExpiresAtInput" placeholder="可留空，支持时间戳或日期" />
+            </label>
+            <label>
+              <span>粘贴 localStorage / JSON / token 文本</span>
+              <textarea id="pasteInput" rows="4" placeholder="可粘贴 auth_token、refresh_token 或 localStorage JSON，然后点解析。"></textarea>
+            </label>
+            <div class="form-actions">
+              <button type="button" id="parseBtn">解析粘贴内容</button>
+              <button type="submit" class="primary" id="saveBtn">保存账号</button>
+            </div>
+        </form>
+      </section>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
