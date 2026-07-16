@@ -10,7 +10,6 @@ import {
 import http from "node:http"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
-import { ProxyAgent, fetch as proxyFetch } from "undici"
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
 const PUBLIC_DIR = path.join(ROOT, "public")
@@ -21,13 +20,6 @@ const PORT = Number(process.env.PORT || 3847)
 const BODY_LIMIT_BYTES = 1024 * 1024
 const REQUEST_TIMEOUT_MS = 18000
 const SUB2API_REFRESH_BUFFER_MS = 120 * 1000
-const DEFAULT_CLASH_PROXY_URL = "http://127.0.0.1:7890"
-const REMOTE_PROXY_URL = normalizeProxyUrl(
-  process.env.CLASH_PROXY_URL ||
-    process.env.ACCOUNT_DASHBOARD_PROXY_URL ||
-    DEFAULT_CLASH_PROXY_URL,
-)
-const REMOTE_PROXY_AGENT = REMOTE_PROXY_URL ? new ProxyAgent(REMOTE_PROXY_URL) : null
 
 class AppError extends Error {
   constructor(message, status = 500, details = undefined) {
@@ -59,19 +51,6 @@ function textResponse(res, statusCode, body, contentType = "text/plain") {
     "Content-Length": Buffer.byteLength(body),
   })
   res.end(body)
-}
-
-function normalizeProxyUrl(value) {
-  const raw = String(value ?? "").trim()
-  if (!raw) return null
-  const withScheme = /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(raw) ? raw : `http://${raw}`
-  try {
-    const url = new URL(withScheme)
-    if (!["http:", "https:"].includes(url.protocol)) return null
-    return url.toString().replace(/\/+$/, "")
-  } catch {
-    return null
-  }
 }
 
 function redactSecrets(value) {
@@ -313,12 +292,11 @@ async function fetchRemoteJson(account, endpoint, options = {}) {
         ? { Authorization: `Bearer ${trimmed(account.accessToken)}` }
         : {}),
     }
-    const response = await proxyFetch(url, {
+    const response = await fetch(url, {
       method: options.method || "GET",
       headers,
       body: options.body ? JSON.stringify(options.body) : undefined,
       signal: controller.signal,
-      ...(REMOTE_PROXY_AGENT ? { dispatcher: REMOTE_PROXY_AGENT } : {}),
     })
     const text = await response.text()
     let json = null

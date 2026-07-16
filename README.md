@@ -1,72 +1,67 @@
-# Account Quota Desktop Widget
+# Sub2API Quota Widget
 
-一个本地运行的 Sub2API 账号额度面板，包含完整网页面板和 Windows 桌面挂件模式。
+A local Sub2API account quota dashboard with a Windows desktop widget mode.
 
-## 功能
+## Features
 
-- 本地网页面板：新增、编辑、删除账号并手动刷新额度。
-- 桌面挂件：透明无边框窗口，固定显示账号余额和今日/本月额度。
-- 自动刷新：默认每 60 秒刷新一次账号数据。
-- 本地存储：账号、token、登录邮箱和密码只保存在本机 `data/accounts.json`。
-- Clash 代理：后端访问远端 Sub2API 站点时默认走 `http://127.0.0.1:7890`。
+- Local web dashboard for adding, editing, deleting, and refreshing accounts.
+- Desktop widget powered by Electron for always-visible quota display.
+- Auto refresh every 60 seconds by default.
+- Local-only storage in `data/accounts.json`.
+- No telemetry, cloud sync, or bundled personal account data.
 
-## 安装
+## Install
 
 ```powershell
 npm.cmd install
 ```
 
-## 启动网页面板
+## Start The Web Dashboard
 
 ```powershell
 npm.cmd start
 ```
 
-然后打开：
+Open:
 
 ```text
 http://127.0.0.1:3847/
 ```
 
-## 启动桌面挂件
+## Start The Desktop Widget
 
 ```powershell
 npm.cmd run desktop
 ```
 
-也可以运行：
+Or run:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\start-desktop.ps1
 ```
 
-## 环境变量
-
-可以复制 `.env.example` 作为参考。当前代码主要读取这些环境变量：
+## Environment Variables
 
 ```text
 HOST=127.0.0.1
 PORT=3847
-CLASH_PROXY_URL=http://127.0.0.1:7890
 ```
 
-如果不设置 `CLASH_PROXY_URL`，默认使用 Clash 常见 HTTP 代理端口 `http://127.0.0.1:7890`。
+## Data And Privacy
 
-## 数据和隐私
+- Account data is stored locally in `data/accounts.json`.
+- `data/` is ignored by Git and should never be committed.
+- Do not commit migration packages, desktop settings, logs, or `.env` files.
+- API responses returned to the frontend mask access and refresh tokens, but the local data file still contains sensitive credentials.
 
-- 真实账号数据会写入 `data/accounts.json`。
-- `data/` 已加入 `.gitignore`，不要提交到公开仓库。
-- 请不要提交迁移包、桌面设置、日志文件或 `.env`。
-- 返回给前端的账号数据会隐藏 access token 和 refresh token，但本地数据文件仍包含敏感信息。
-
-## 开发结构
+## Project Structure
 
 ```text
-desktop/   Electron 桌面壳
-public/    前端页面
-server/    本地 HTTP 服务和 Sub2API 请求逻辑
-scripts/   Windows 启动辅助脚本
-assets/    图标资源
+desktop/   Electron desktop shell
+public/    Frontend assets
+server/    Local HTTP server and Sub2API request logic
+scripts/   Windows helper scripts
+assets/    Icon assets
 ```
 
 ## License

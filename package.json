@@ -10,7 +10,6 @@
     "desktop": "electron ."
   },
   "dependencies": {
-    "electron": "^37.0.0",
-    "undici": "^6.27.0"
+    "electron": "^37.0.0"
   }
 }
