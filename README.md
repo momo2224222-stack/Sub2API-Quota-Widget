@@ -1,67 +1,71 @@
 # Sub2API Quota Widget
 
-A local Sub2API account quota dashboard with a Windows desktop widget mode.
+一个本地运行的 Sub2API 账号额度面板，包含完整网页面板和 Windows 桌面挂件模式。
 
-## Features
+> 下方效果图使用的是示例数据，不包含任何真实账号、域名、余额、token 或密码。
 
-- Local web dashboard for adding, editing, deleting, and refreshing accounts.
-- Desktop widget powered by Electron for always-visible quota display.
-- Auto refresh every 60 seconds by default.
-- Local-only storage in `data/accounts.json`.
-- No telemetry, cloud sync, or bundled personal account data.
+![桌面挂件效果图（示例数据）](assets/widget-preview.svg)
 
-## Install
+## 功能
+
+- 本地网页面板：新增、编辑、删除账号，并手动刷新额度。
+- 桌面挂件：透明无边框窗口，固定显示账号余额、今日余额、本月余额等信息。
+- 自动刷新：默认每 60 秒刷新一次账号数据。
+- 本地存储：账号、token、登录邮箱和密码只保存在本机 `data/accounts.json`。
+- 隐私优先：不包含统计、云同步或任何预置个人账号数据。
+
+## 安装
 
 ```powershell
 npm.cmd install
 ```
 
-## Start The Web Dashboard
+## 启动网页面板
 
 ```powershell
 npm.cmd start
 ```
 
-Open:
+然后打开：
 
 ```text
 http://127.0.0.1:3847/
 ```
 
-## Start The Desktop Widget
+## 启动桌面挂件
 
 ```powershell
 npm.cmd run desktop
 ```
 
-Or run:
+也可以运行：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\start-desktop.ps1
 ```
 
-## Environment Variables
+## 环境变量
 
 ```text
 HOST=127.0.0.1
 PORT=3847
 ```
 
-## Data And Privacy
+## 数据和隐私
 
-- Account data is stored locally in `data/accounts.json`.
-- `data/` is ignored by Git and should never be committed.
-- Do not commit migration packages, desktop settings, logs, or `.env` files.
-- API responses returned to the frontend mask access and refresh tokens, but the local data file still contains sensitive credentials.
+- 真实账号数据会写入 `data/accounts.json`。
+- `data/` 已加入 `.gitignore`，不要提交到公开仓库。
+- 请不要提交迁移包、桌面设置、日志文件或 `.env`。
+- 返回给前端的账号数据会隐藏 access token 和 refresh token，但本地数据文件仍包含敏感凭据。
 
-## Project Structure
+## 项目结构
 
 ```text
-desktop/   Electron desktop shell
-public/    Frontend assets
-server/    Local HTTP server and Sub2API request logic
-scripts/   Windows helper scripts
-assets/    Icon assets
+desktop/   Electron 桌面壳
+public/    前端页面和样式
+server/    本地 HTTP 服务和 Sub2API 请求逻辑
+scripts/   Windows 启动辅助脚本
+assets/    图标和 README 效果图
 ```
 
 ## License
